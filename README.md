@@ -51,7 +51,7 @@ Press `` Ctrl + ` `` or go to **Terminal → New Terminal**.
 ### 2. Navigate to the project folder
 
 ```bash
-cd "C:\Users\Tanu's\.gemini\antigravity\scratch\image-forgery-detection"
+cd "C:\Users\Tanu's\OneDrive\Desktop\ImageForgeryDetection"
 ```
 
 ### 3. Create a virtual environment
