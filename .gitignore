@@ -1,0 +1,26 @@
+# Virtual Environment
+venv/
+ENV/
+env/
+.env
+
+# Python Compiled Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Local Uploads (ForensicAI upload history)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# IDE Settings
+.vscode/
+.idea/
+
+# System files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

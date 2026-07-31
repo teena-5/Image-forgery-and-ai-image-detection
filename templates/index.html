@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ForensicAI — Detect image forgery and AI-generated content using Error Level Analysis, metadata inspection, noise pattern analysis, frequency domain analysis, and texture analysis.">
+    <title>ForensicAI — Image Forgery Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- ===================== HEADER ===================== -->
+    <header id="app-header">
+        <nav id="main-nav">
+            <div class="nav-inner">
+                <a href="/" id="logo" class="logo">
+                    <span class="logo-icon">🔬</span>
+                    <span class="logo-text">Let's Detect</span>
+                </a>
+                <span class="tagline">AI-Powered Image Forensics</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ===================== HERO ===================== -->
+        <section id="hero-section" class="hero">
+            <!-- Floating particles -->
+            <div class="particles" aria-hidden="true">
+                <span class="particle p1"></span>
+                <span class="particle p2"></span>
+                <span class="particle p3"></span>
+                <span class="particle p4"></span>
+                <span class="particle p5"></span>
+                <span class="particle p6"></span>
+                <span class="particle p7"></span>
+                <span class="particle p8"></span>
+            </div>
+
+            <div class="hero-content slide-up">
+                <h1 id="hero-title">Detect Image Forgery<br>&amp; AI Generation</h1>
+                <p id="hero-subtitle" class="subtitle">
+                    Leverage Error Level Analysis, metadata inspection, noise patterns, frequency-domain forensics, and texture analysis — powered by AI — to determine whether an image is authentic, edited, or AI-generated.
+                </p>
+            </div>
+        </section>
+
+        <!-- ===================== UPLOAD ===================== -->
+        <section id="upload-section" class="section">
+            <div class="container">
+                <div id="drop-zone" class="drop-zone" role="button" tabindex="0" aria-label="Upload image for analysis">
+                    <div class="drop-zone-inner">
+                        <span class="upload-icon">📤</span>
+                        <p class="drop-zone-text">Drag &amp; drop an image or <strong>click to browse</strong></p>
+                        <span class="supported-formats">Supports JPEG, PNG, WebP, BMP, TIFF</span>
+                    </div>
+                </div>
+                <input type="file" id="file-input" accept="image/*" hidden>
+
+                <div id="preview-area" class="preview-area hidden">
+                    <img id="preview-img" src="" alt="Image preview">
+                    <button id="analyze-btn" class="btn-analyze" type="button">
+                        <span class="btn-icon">⚡</span> Analyze Image
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== LOADING ===================== -->
+        <section id="loading-section" class="section hidden">
+            <div class="container loading-container">
+                <div id="spinner" class="spinner"></div>
+                <h2 class="loading-title">Analyzing image&hellip;</h2>
+                <ul id="loading-steps" class="loading-steps">
+                    <li id="step-ela" class="loading-step">Running Error Level Analysis&hellip;</li>
+                    <li id="step-meta" class="loading-step">Checking metadata&hellip;</li>
+                    <li id="step-noise" class="loading-step">Analyzing noise patterns&hellip;</li>
+                    <li id="step-freq" class="loading-step">FFT frequency analysis&hellip;</li>
+                    <li id="step-texture" class="loading-step">Texture analysis&hellip;</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== RESULTS ===================== -->
+        <section id="results-section" class="section hidden">
+            <div class="container results-container">
+
+                <!-- Verdict Card -->
+                <div id="verdict-card" class="verdict-card fade-in">
+                    <span id="verdict-icon" class="verdict-icon"></span>
+                    <h2 id="verdict-text" class="verdict-text"></h2>
+                    <div class="confidence-wrapper">
+                        <div id="confidence-bar" class="confidence-bar">
+                            <div id="confidence-fill" class="confidence-fill"></div>
+                        </div>
+                        <span id="confidence-pct" class="confidence-pct"></span>
+                    </div>
+                </div>
+
+                <!-- Vote Distribution -->
+                <div class="vote-grid fade-in">
+                    <div id="vote-real" class="vote-card">
+                        <span class="vote-label">Real</span>
+                        <span class="vote-score" id="vote-real-score">—</span>
+                    </div>
+                    <div id="vote-edited" class="vote-card">
+                        <span class="vote-label">Edited</span>
+                        <span class="vote-score" id="vote-edited-score">—</span>
+                    </div>
+                    <div id="vote-ai" class="vote-card">
+                        <span class="vote-label">AI Generated</span>
+                        <span class="vote-score" id="vote-ai-score">—</span>
+                    </div>
+                </div>
+
+                <!-- Image Comparison -->
+                <div class="comparison-grid fade-in">
+                    <div class="comparison-card">
+                        <img id="original-img" src="" alt="Original image">
+                        <div class="comparison-label">Original</div>
+                    </div>
+                    <div class="comparison-card">
+                        <img id="ela-img" src="" alt="Error Level Analysis visualization">
+                        <div class="comparison-label">ELA Visualization</div>
+                    </div>
+                </div>
+
+                <!-- Analysis Details -->
+                <div class="details-section fade-in">
+                    <h3 class="details-heading">Analysis Details</h3>
+
+                    <div class="detail-card" id="ela-card">
+                        <button class="detail-header" id="ela-header" type="button" aria-expanded="false" aria-controls="ela-details">
+                            <span>🔎 Error Level Analysis</span>
+                            <span class="chevron">▾</span>
+                        </button>
+                        <div class="detail-content" id="ela-details"></div>
+                    </div>
+
+                    <div class="detail-card" id="metadata-card">
+                        <button class="detail-header" id="metadata-header" type="button" aria-expanded="false" aria-controls="metadata-details">
+                            <span>🏷️ Metadata Analysis</span>
+                            <span class="chevron">▾</span>
+                        </button>
+                        <div class="detail-content" id="metadata-details"></div>
+                    </div>
+
+                    <div class="detail-card" id="noise-card">
+                        <button class="detail-header" id="noise-header" type="button" aria-expanded="false" aria-controls="noise-details">
+                            <span>📊 Noise Analysis</span>
+                            <span class="chevron">▾</span>
+                        </button>
+                        <div class="detail-content" id="noise-details"></div>
+                    </div>
+
+                    <div class="detail-card" id="frequency-card">
+                        <button class="detail-header" id="frequency-header" type="button" aria-expanded="false" aria-controls="frequency-details">
+                            <span>〰️ Frequency Analysis</span>
+                            <span class="chevron">▾</span>
+                        </button>
+                        <div class="detail-content" id="frequency-details"></div>
+                    </div>
+
+                    <div class="detail-card" id="texture-card">
+                        <button class="detail-header" id="texture-header" type="button" aria-expanded="false" aria-controls="texture-details">
+                            <span>🧩 Texture Analysis</span>
+                            <span class="chevron">▾</span>
+                        </button>
+                        <div class="detail-content" id="texture-details"></div>
+                    </div>
+                </div>
+
+                <!-- Reset -->
+                <div class="reset-wrapper fade-in">
+                    <button id="reset-btn" class="btn-reset" type="button">Analyze Another Image</button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer id="app-footer">
+        <div class="container">
+            <p>Built with 🔬 ForensicAI &mdash; AI-Powered Image Forensics &copy; 2026</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
